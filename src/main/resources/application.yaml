@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: TelegramEturnBot
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+
+token: "12345"
+bot:
+  name: eturn_app
+server:
+  port: 27111

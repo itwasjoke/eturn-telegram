@@ -1,0 +1,24 @@
+version: "3.1"
+
+volumes:
+  pg_eturn_tg:
+
+services:
+  eturn_db:
+    image: postgres:15
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - pg_eturn_tg:/var/lib/postgresql/data
+    ports:
+      - "27113:5432"
+  eturn_app:
+    restart: always
+    build: .
+    ports:
+      - "27111:27111"
+    depends_on:
+      - eturn_db
+    env_file:
+      - .env
