@@ -17,9 +17,9 @@ public class LocalUser {
     private String lastName;
     private String username;
 
-    @OneToMany(mappedBy = "localUser")
+    @OneToMany(mappedBy = "localUser", fetch = FetchType.EAGER)
     private List<Position> positionList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "creator")
+    @OneToMany(mappedBy = "creator", fetch = FetchType.EAGER)
     private List<Turn> turns = new ArrayList<>();
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.User;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
@@ -27,6 +28,7 @@ public class UserServiceImpl implements UserService {
         // иначе создаем нового
         LocalUser localUser = new LocalUser();
         localUser.setId(TgUser.getId());
+        localUser.setTurns(new ArrayList<>());
         localUser.setUsername(TgUser.getUserName());
         localUser.setFirstName(TgUser.getFirstName());
         localUser.setLastName(TgUser.getLastName());

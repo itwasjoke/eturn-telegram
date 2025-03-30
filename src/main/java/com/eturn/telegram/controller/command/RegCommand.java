@@ -5,6 +5,7 @@ import com.eturn.telegram.service.MessageService;
 import com.eturn.telegram.service.UserService;
 import lombok.NonNull;
 import lombok.Setter;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.telegram.abilitybots.api.sender.SilentSender;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -14,9 +15,8 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import java.util.List;
 
 @Service
-public class RegCommand implements TgCommand {
-    @Setter
-    private SilentSender silentSender;
+@Log4j2
+public class RegCommand {
     private final UserService userService;
     private final MessageService messageService;
 
@@ -28,8 +28,8 @@ public class RegCommand implements TgCommand {
         this.messageService = messageService;
     }
 
-    @Override
-    public void getAnswer(Message message) {
+    public void getAnswer(Message message, SilentSender silentSender) {
+        log.info("Get answer");
         LocalUser localUser = userService.registerUser(message);
         SendMessage sendMessage = new SendMessage();
         sendMessage.setText("Добро пожаловать, "+localUser.getFirstName()+"! \n\n Это Eturn - сервис электронных очередей!");
