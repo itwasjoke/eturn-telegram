@@ -10,13 +10,14 @@ import org.springframework.stereotype.Service;
 import org.telegram.abilitybots.api.sender.SilentSender;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
+import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
 import java.util.List;
 
 @Service
 @Log4j2
-public class RegCommand {
+public class RegCommand implements ButtonAction {
     private final UserService userService;
     private final MessageService messageService;
 
@@ -28,8 +29,15 @@ public class RegCommand {
         this.messageService = messageService;
     }
 
-    public void getAnswer(Message message, SilentSender silentSender) {
+    @Override
+    public void handle(Update update, SilentSender sender) {
         log.info("Get answer");
+        Message message;
+        if (update.hasCallbackQuery() && update.getMessage()==null) {
+            message = update.getCallbackQuery().getMessage();
+        } else {
+            message = update.getMessage();
+        }
         LocalUser localUser = userService.registerUser(message);
         SendMessage sendMessage = new SendMessage();
         sendMessage.setText("Добро пожаловать, "+localUser.getFirstName()+"! \n\n Это Eturn - сервис электронных очередей!");
@@ -52,6 +60,6 @@ public class RegCommand {
 
         sendMessage.setChatId(message.getChatId());
         sendMessage.setReplyMarkup(inlineKeyboardMarkup);
-        silentSender.execute(sendMessage);
+        sender.execute(sendMessage);
     }
 }

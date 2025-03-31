@@ -9,6 +9,7 @@ import com.eturn.telegram.service.UserService;
 import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
 import java.util.Optional;
 
 @Service
@@ -22,7 +23,9 @@ public class TurnServiceImpl implements TurnService {
     }
 
     @Override
-    public String createTurn(Turn turn, Long userId) {
+    public void startCreating(String name, Long userId) {
+        Turn turn = new Turn();
+        turn.setName(name);
         String hash;
         int count = 0;
 
@@ -33,6 +36,25 @@ public class TurnServiceImpl implements TurnService {
         Optional<LocalUser> userOptional = userService.getUserById(userId);
         userOptional.ifPresent(turn::setCreator);
         turn.setHash(hash);
-        return turnRepository.save(turn).getHash();
+        turn.setDone(false);
+        turnRepository.save(turn);
+    }
+
+    @Override
+    public Turn finishCreating(String desc, Long userId) {
+        Optional<LocalUser> userOptional = userService.getUserById(userId);
+        if (userOptional.isPresent()) {
+            Optional<Turn> turnOptional = turnRepository.findByDoneAndCreator(false,userOptional.get());
+            if (turnOptional.isPresent()) {
+                Turn turn = turnOptional.get();
+                turn.setDone(true);
+                turn.setDescription(desc);
+                Calendar calendar = Calendar.getInstance();
+                calendar.add(Calendar.DAY_OF_MONTH, 30);
+                turn.setDateStart(calendar.getTime());
+                return turnRepository.save(turn);
+            }
+        }
+        return null;
     }
 }

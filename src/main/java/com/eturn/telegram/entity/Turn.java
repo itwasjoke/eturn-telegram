@@ -20,6 +20,7 @@ public class Turn {
     private String name;
     private String description;
     private Date dateStart;
+    private boolean done = false;
 
     @ManyToOne
     private LocalUser creator;
