@@ -1,9 +1,6 @@
 package com.eturn.telegram.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,7 +19,8 @@ public class Turn {
     private Date dateStart;
     private boolean done = false;
 
-    @ManyToOne
+    @ManyToOne()
+    @JoinColumn(name = "creator_id")
     private LocalUser creator;
 
     @OneToMany(mappedBy = "turn")

@@ -1,5 +1,8 @@
 package com.eturn.telegram.controller.command;
 
+import com.eturn.telegram.controller.command.btns.CreateTurnBtn;
+import com.eturn.telegram.controller.command.btns.MainBtn;
+import com.eturn.telegram.controller.command.btns.ShowTurnListBtn;
 import com.eturn.telegram.controller.command.btns.ShowTurnsBtn;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,10 +18,14 @@ public class ButtonsHandler {
     private final Map<String, ButtonAction> actions = new HashMap<>();
     public ButtonsHandler(
             ShowTurnsBtn showTurnsBtn,
-            RegCommand regCommand
+            MainBtn mainBtn,
+            CreateTurnBtn createTurnBtn,
+            ShowTurnListBtn showTurnListBtn
     ) {
-        actions.put("show_turns", showTurnsBtn);
-        actions.put("go_main", regCommand);
+        actions.put("go_turn", showTurnsBtn);
+        actions.put("go_main", mainBtn);
+        actions.put("create_turn", createTurnBtn);
+        actions.put("show_turns", showTurnListBtn);
     }
 
     public void handleAction(Update update, SilentSender sender) {

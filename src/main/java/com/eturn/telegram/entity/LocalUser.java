@@ -5,7 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -17,9 +19,9 @@ public class LocalUser {
     private String lastName;
     private String username;
 
-    @OneToMany(mappedBy = "localUser", fetch = FetchType.EAGER)
-    private List<Position> positionList = new ArrayList<>();
+    @OneToMany(mappedBy = "localUser", fetch = FetchType.LAZY)
+    private Set<Position> positionList = new HashSet<>();
 
-    @OneToMany(mappedBy = "creator", fetch = FetchType.EAGER)
-    private List<Turn> turns = new ArrayList<>();
+    @OneToMany(mappedBy = "creator", fetch = FetchType.LAZY)
+    private Set<Turn> turns = new HashSet<>();
 }
