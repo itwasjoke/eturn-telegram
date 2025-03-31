@@ -7,6 +7,7 @@ import com.eturn.telegram.service.TurnService;
 import org.springframework.stereotype.Service;
 import org.telegram.abilitybots.api.sender.SilentSender;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
@@ -40,6 +41,8 @@ public class ShowTurnListBtn implements ButtonAction {
                 sb.append(" / `");
                 sb.append(turn.getHash());
                 sb.append("`\n");
+                sb.append(turn.getDescription());
+                sb.append("\n\n");
             }
             message.setText(sb.toString());
         }

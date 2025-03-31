@@ -10,6 +10,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.telegram.abilitybots.api.sender.SilentSender;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
@@ -36,7 +37,6 @@ public class MainBtn implements ButtonAction {
     @Override
     @Transactional
     public void handle(Update update, SilentSender sender) {
-        log.info("Get answer");
         User user;
         Message message;
         if (update.hasCallbackQuery() && update.getMessage()==null) {
@@ -45,7 +45,13 @@ public class MainBtn implements ButtonAction {
         } else {
             user = update.getMessage().getFrom();
             message = update.getMessage();
+            messageService.deleteMessage(
+                    message.getChatId(),
+                    message.getMessageId(),
+                    sender
+            );
         }
+
         LocalUser localUser = userService.registerUser(user);
         SendMessage sendMessage = new SendMessage();
         sendMessage.setText("Добро пожаловать, "+localUser.getFirstName()+"! \n\n Это Eturn - сервис электронных очередей!");

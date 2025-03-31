@@ -9,6 +9,7 @@ import com.eturn.telegram.service.TurnService;
 import org.springframework.stereotype.Service;
 import org.telegram.abilitybots.api.sender.SilentSender;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
@@ -22,14 +23,17 @@ public class CreateTurnBtn implements ButtonAction {
     private final TurnService turnService;
     private final ChatActionService chatActionService;
     private final ShowTurnsBtn showTurnsBtn;
+    private final MessageService messageService;
+
     public CreateTurnBtn(
             TurnService turnService,
             ChatActionService chatActionService,
-            ShowTurnsBtn showTurnsBtn
-    ) {
+            ShowTurnsBtn showTurnsBtn,
+            MessageService messageService) {
         this.turnService = turnService;
         this.chatActionService = chatActionService;
         this.showTurnsBtn = showTurnsBtn;
+        this.messageService = messageService;
     }
     public void startCreating(Long chatId, String name) {
         turnService.startCreating(name, chatId);
@@ -45,6 +49,7 @@ public class CreateTurnBtn implements ButtonAction {
 
     @Override
     public void handle(Update update, SilentSender sender) {
+
         SendMessage sendMessage = new SendMessage();
         Long id = update.getCallbackQuery().getMessage().getChatId();
         sendMessage.setChatId(id);

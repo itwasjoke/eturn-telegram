@@ -2,6 +2,8 @@ package com.eturn.telegram.service.impl;
 
 import com.eturn.telegram.service.MessageService;
 import org.springframework.stereotype.Service;
+import org.telegram.abilitybots.api.sender.SilentSender;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
@@ -41,5 +43,13 @@ public class MessageServiceImpl implements MessageService {
 
         markupInline.setKeyboard(rowsInline);
         return markupInline;
+    }
+
+    @Override
+    public void deleteMessage(long chatId, int messageId, SilentSender sender) {
+        DeleteMessage deleteMessage = new DeleteMessage();
+        deleteMessage.setMessageId(messageId);
+        deleteMessage.setChatId(chatId);
+        sender.execute(deleteMessage);
     }
 }
